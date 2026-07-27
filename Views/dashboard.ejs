@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Drive Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="bg-slate-100 ">
+
+    <div class="flex h-screen">
+
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col">
+            <div class="px-8 py-7 flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center">
+                    <i class="ri-cloud-line text-white text-3xl"></i>
+                </div>
+
+                <h1 class="text-5xl font-bold">
+                    Drive
+                </h1>
+            </div>
+
+            <div class="px-6">
+                <button
+                    class="flex items-center gap-3 bg-white shadow-md hover:shadow-lg rounded-2xl px-6 py-4 border border-slate-200 w-full">
+                    <i class="ri-add-line text-3xl"></i>
+
+                    <span class="text-lg font-medium">
+                        New
+                    </span>
+                </button>
+
+
+            </div>
+
+            <div class="mt-10 space-y-2 px-3">
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+                    <i class="ri-home-5-line text-xl"></i>
+                    Home
+                </a>
+
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-blue-50 text-blue-600">
+
+                    <i class="ri-folder-line text-xl"></i>
+
+                    My Drive
+
+                </a>
+
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+                    <i class="ri-history-line text-xl"></i>
+                    Recent
+                </a>
+
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+
+                    <i class="ri-star-line text-xl"></i>
+
+                    Starred
+
+                </a>
+
+                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+
+                    <i class="ri-delete-bin-line text-xl"></i>
+
+                    Trash
+
+                </a>
+            </div>
+
+            <div class="mt-auto p-6">
+                <a href="/user/logout"
+                    class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500">
+                    <i class="ri-logout-box-line text-xl"></i>
+                    Logout
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col">
+            <div class="bg-white border-b border-slate-200 p-6 flex justify-between items-center">
+                <div class="bg-slate-100 rounded-full px-6 py-3 flex items-center gap-4 w-[500px]">
+                    <i class="ri-search-line text-xl text-slate-500"></i>
+                    <input type="text" placeholder="Searc in drive" class="bg-transparent outline-none w-full">
+
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <h2 class="font-semibold">
+                            <%= user.username %>
+                        </h2>
+
+                        <p class="text-sm text-slate-500">
+                            <%= user.email %>
+                        </p>
+                    </div>
+
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                        <%= user.username.charAt(0).toUpperCase() %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-3xl font-bold">
+                        My Drive
+                    </h2>
+
+                    <form action="/file/upload" method="POST" enctype="multipart/form-data" class="flex gap-3">
+
+                        <input type="file" name="file" required class="border rounded-lg p-2 bg-white">
+
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
+
+                            <i class="ri-upload-cloud-line mr-2"></i>
+
+                            Upload
+
+                        </button>
+
+                    </form>
+                </div>
+
+                <div class="mt-10 grid grid-cols-4 gap-6">
+
+                    <% if(files.length===0){ %>
+
+                        <div class="col-span-4 text-center py-20">
+
+                            <i class="ri-folder-open-line text-8xl text-slate-300"></i>
+
+                            <h2 class="text-3xl font-semibold mt-6">
+                                No Files Yet
+                            </h2>
+
+                            <p class="text-slate-500 mt-3">
+                                Upload your first file to get started.
+                            </p>
+
+                        </div>
+
+                        <% } %>
+
+                            <% files.forEach(file=> { %>
+
+                                <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5">
+
+                                    <i class="ri-file-line text-5xl text-blue-500"></i>
+
+                                    <h2 class="font-semibold mt-4 truncate">
+                                        <%= file.originalname %>
+                                    </h2>
+
+                                    <p class="text-gray-500 text-sm mt-2">
+                                        <%= (file.size / 1024).toFixed(2) %> KB
+                                    </p>
+
+                                    <div class="flex gap-3 mt-5">
+                                        <a href="/file/download/<%=file._id %>"
+                                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                                            Download
+                                        </a>
+
+                                        <a href="/file/delete/<%=file._id %>"
+                                            onclick="return confirm('Delete this file?')"
+                                            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+
+                                            Delete
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                                <% }) %>
+
+                </div>
+            </div>
+        </main>
+
+
+
+
+    </div>
+
+    <%- include('partials/footer') %>
+
+</body>
+
+</html>

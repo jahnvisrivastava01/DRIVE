@@ -3,10 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Drive Clone</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
 </head>
-<body>
-    <h1>hello world!</h1>
-    
+
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 min-h-screen">
+
+<nav class="flex justify-between items-center px-10 py-6">
+
+    <h1 class="text-3xl font-bold text-white flex items-center gap-2">
+        <i class="ri-cloud-line text-blue-500"></i>
+        Drive
+    </h1>
+
+    <div class="space-x-4">
+
+        <a href="/user/login"
+            class="text-white hover:text-blue-400">
+            Login
+        </a>
+
+        <a href="/user/register"
+            class="bg-blue-600 px-5 py-2 rounded-xl text-white hover:bg-blue-700">
+            Register
+        </a>
+
+    </div>
+
+</nav>
+
+<section class="flex items-center justify-center h-[80vh]">
+
+    <div class="text-center max-w-3xl">
+
+        <i class="ri-cloud-line text-8xl text-blue-500"></i>
+
+        <h1 class="text-6xl font-bold text-white mt-6">
+            Store your files securely.
+        </h1>
+
+        <p class="text-slate-400 text-xl mt-6">
+            Upload, organize and access your files from anywhere.
+        </p>
+
+        <div class="mt-10 space-x-4">
+
+            <a href="/user/register"
+                class="bg-blue-600 px-8 py-4 rounded-2xl text-white hover:bg-blue-700">
+                Get Started
+            </a>
+
+            <a href="/user/login"
+                class="border border-slate-600 px-8 py-4 rounded-2xl text-white hover:border-blue-500">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
 </body>
 </html>

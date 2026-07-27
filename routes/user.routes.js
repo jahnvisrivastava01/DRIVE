@@ -40,7 +40,7 @@ router.post('/register',
     })
 
 
-    res.json(newUser);
+    res.redirect('/user/login');
     
    
 })
@@ -94,8 +94,14 @@ router.post('/login',
     res.cookie('token',token)
 
 
-    res.send("login successful!");
+    res.redirect('/dashboard');
 
+})
+
+
+router.get('/logout',(req,res)=>{
+    res.clearCookie('token');
+    res.redirect('/user/login');
 })
 
 
