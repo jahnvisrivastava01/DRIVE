@@ -6,6 +6,7 @@ const router = express.Router();
 
 const authMiddleware = require('../middleware/auth.middleware');
 const File = require('../models/file.models');
+const User = require("../models/user.models");
 
 
 router.get('/', (req, res) => {
@@ -13,17 +14,38 @@ router.get('/', (req, res) => {
 });
 
 
-router.get('/dashboard', authMiddleware, async (req, res) => {
+router.get("/dashboard", authMiddleware, async (req, res) => {
+
+    const user = await User.findById(req.user.userId);
 
     const files = await File.find({
         owner: req.user.userId,
-        isDeleted : false
+        isDeleted: false
     });
 
-    res.render('dashboard', {
-        user: req.user,
-         files,
-         page:"Home"
+    const totalFiles = await File.countDocuments({
+        owner: req.user.userId,
+        isDeleted: false
+    });
+
+    const starredFiles = await File.countDocuments({
+        owner: req.user.userId,
+        starred: true,
+        isDeleted: false
+    });
+
+    const trashFiles = await File.countDocuments({
+        owner: req.user.userId,
+        isDeleted: true
+    });
+
+    res.render("dashboard", {
+        page: "Home",
+        user,
+        files,
+        totalFiles,
+        starredFiles,
+        trashFiles
     });
 
 });

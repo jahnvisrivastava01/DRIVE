@@ -256,28 +256,39 @@
 
                     </div>
 
-                    <form action="/file/upload" method="POST" enctype="multipart/form-data"
-                        class="flex flex-col sm:flex-row gap-3 items-center xl:justify-end">
+                   <div class="grid grid-cols-3 gap-3">
 
-                        <input id="fileInput" type="file" name="file" required class="border bg-white rounded-xl p-3
-                        w-full xl:w-96">
+    <div class="bg-white rounded-xl shadow p-3 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
 
-                        <button type="submit" class="bg-blue-600
-                        hover:bg-blue-700
-                        text-white
-                        rounded-xl
-                        px-6
-                        py-3
-                        font-semibold
-                        transition">
+        <p class="text-slate-500 text-xs">Total Files</p>
 
-                            <i class="ri-upload-cloud-line mr-2"></i>
+        <h2 class="text-2xl font-bold mt-1">
+            <%= totalFiles %>
+        </h2>
 
-                            Upload
+    </div>
 
-                        </button>
+    <div class="bg-white rounded-xl shadow p-3 text-center  hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
 
-                    </form>
+        <p class="text-slate-500 text-xs">Starred</p>
+
+        <h2 class="text-2xl font-bold mt-1">
+            ⭐ <%= starredFiles %>
+        </h2>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow p-3 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+
+        <p class="text-slate-500 text-xs">Trash</p>
+
+        <h2 class="text-2xl font-bold mt-1">
+            🗑️ <%= trashFiles %>
+        </h2>
+
+    </div>
+
+</div>
 
                 </div>
 
