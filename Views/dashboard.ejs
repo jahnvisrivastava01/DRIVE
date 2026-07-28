@@ -1,60 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title> Drive Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive Dashboard</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
-<body class="bg-slate-100 ">
+<body class="bg-slate-100 min-h-screen flex flex-col">
 
-    <div class="flex h-screen">
+    <div class="flex flex-1">
 
-        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col">
-            <div class="px-8 py-7 flex items-center gap-3">
+        <div id="overlay" class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+
+        <aside id="sidebar" class="fixed lg:static top-0 left-0 z-50
+        w-72 h-screen bg-white border-r border-slate-200
+        flex flex-col
+        -translate-x-full lg:translate-x-0
+        transition-transform duration-300">
+
+
+
+            <div class="px-8 py-7 flex items-center gap-3 border-b">
+
                 <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center">
+
                     <i class="ri-cloud-line text-white text-3xl"></i>
+
                 </div>
 
-                <h1 class="text-5xl font-bold">
+                <h1 class="text-4xl font-bold">
+
                     Drive
+
                 </h1>
+
             </div>
 
-            <div class="px-6">
-                <button
-                    class="flex items-center gap-3 bg-white shadow-md hover:shadow-lg rounded-2xl px-6 py-4 border border-slate-200 w-full">
-                    <i class="ri-add-line text-3xl"></i>
 
-                    <span class="text-lg font-medium">
-                        New
-                    </span>
+
+            <div class="px-6 mt-6 relative">
+
+                <button onclick="toggleNewMenu()" class="w-full flex items-center justify-center gap-3
+        bg-white border border-slate-200 rounded-2xl py-4
+        shadow hover:shadow-lg transition">
+
+                    <i class="ri-add-line text-2xl"></i>
+
+                    <span class="font-semibold">New</span>
+
                 </button>
 
 
+
+                <div id="newMenu"
+                    class="hidden absolute left-6 right-6 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-50">
+
+                    <button onclick="document.getElementById('fileInput').click()"
+                        class="w-full px-5 py-3 text-left hover:bg-slate-100 flex items-center gap-3">
+
+                        <i class="ri-upload-cloud-line text-blue-600"></i>
+
+                        Upload File
+
+                    </button>
+
+                    <button disabled
+                        class="w-full px-5 py-3 text-left text-slate-400 flex items-center gap-3 cursor-not-allowed">
+
+                        <i class="ri-folder-add-line"></i>
+
+                        New Folder (Coming Soon)
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="mt-10 space-y-2 px-3">
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+
+            <nav class="mt-10 px-3 space-y-2">
+
+                <a href="/dashboard" class="flex items-center gap-4 px-4 py-3 rounded-xl
+                <%= page==='Home'
+                ? 'bg-blue-50 text-blue-600 font-semibold'
+                : 'hover:bg-slate-100' %>">
+
                     <i class="ri-home-5-line text-xl"></i>
+
                     Home
-                </a>
-
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-blue-50 text-blue-600">
-
-                    <i class="ri-folder-line text-xl"></i>
-
-                    My Drive
 
                 </a>
 
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+                <a href="/recent" class="flex items-center gap-4 px-4 py-3 rounded-xl
+                <%= page==='Recent'
+                ? 'bg-blue-50 text-blue-600 font-semibold'
+                : 'hover:bg-slate-100' %>">
+
                     <i class="ri-history-line text-xl"></i>
+
                     Recent
+
                 </a>
 
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+                <a href="/starred" class="flex items-center gap-4 px-4 py-3 rounded-xl
+                <%= page==='Starred'
+                ? 'bg-blue-50 text-blue-600 font-semibold'
+                : 'hover:bg-slate-100' %>">
 
                     <i class="ri-star-line text-xl"></i>
 
@@ -62,61 +119,157 @@
 
                 </a>
 
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100">
+                <a href="/trash" class="flex items-center gap-4 px-4 py-3 rounded-xl
+                <%= page==='Trash'
+                ? 'bg-blue-50 text-blue-600 font-semibold'
+                : 'hover:bg-slate-100' %>">
 
                     <i class="ri-delete-bin-line text-xl"></i>
 
                     Trash
 
                 </a>
+
+            </nav>
+
+
+
+            <div class="mt-auto border-t p-6">
+
+                <a href="/user/logout" class="flex items-center gap-4 px-4 py-3 rounded-xl
+                text-red-500 hover:bg-red-50">
+
+                    <i class="ri-logout-box-line"></i>
+
+                    Logout
+
+                </a>
+
             </div>
 
-            <div class="mt-auto p-6">
-                <a href="/user/logout"
-                    class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500">
-                    <i class="ri-logout-box-line text-xl"></i>
-                    Logout
-                </a>
-            </div>
         </aside>
 
-        <main class="flex-1 flex flex-col">
-            <div class="bg-white border-b border-slate-200 p-6 flex justify-between items-center">
-                <div class="bg-slate-100 rounded-full px-6 py-3 flex items-center gap-4 w-[500px]">
-                    <i class="ri-search-line text-xl text-slate-500"></i>
-                    <input type="text" placeholder="Searc in drive" class="bg-transparent outline-none w-full">
+
+
+        <main class="flex-1 flex flex-col min-w-0">
+
+
+
+            <header class="bg-white border-b border-slate-200
+            px-4 md:px-8 py-5
+            flex items-center justify-between gap-4">
+
+
+
+                <div class="flex items-center gap-4 flex-1">
+
+
+                    <button onclick="toggleSidebar()" class="lg:hidden text-3xl">
+
+                        <i class="ri-menu-line"></i>
+
+                    </button>
+
+
+
+                    <form action="/search" method="GET" class="flex items-center gap-3
+                    bg-slate-100
+                    rounded-full
+                    px-5 py-3
+                    w-full
+                    max-w-xl">
+
+                        <i class="ri-search-line text-slate-500"></i>
+
+                        <input type="text" name="q" value="<%= typeof query !== 'undefined' ? query : '' %>"
+                            placeholder="Search in Drive..." class="bg-transparent outline-none w-full">
+
+                    </form>
 
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
+
+
+                <div class="flex items-center gap-3">
+
+                    <div class="hidden sm:block text-right">
+
                         <h2 class="font-semibold">
+
                             <%= user.username %>
+
                         </h2>
 
                         <p class="text-sm text-slate-500">
+
                             <%= user.email %>
+
                         </p>
+
                     </div>
 
-                    <div
-                        class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                    <div class="w-11 h-11 rounded-full
+                    bg-blue-600
+                    text-white
+                    flex items-center justify-center
+                    font-bold">
+
                         <%= user.username.charAt(0).toUpperCase() %>
+
                     </div>
+
                 </div>
-            </div>
 
-            <div class="p-10">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-3xl font-bold">
-                        My Drive
-                    </h2>
+            </header>
 
-                    <form action="/file/upload" method="POST" enctype="multipart/form-data" class="flex gap-3">
 
-                        <input type="file" name="file" required class="border rounded-lg p-2 bg-white">
 
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
+            <section class=" flex-1 flex flex-col p-5 md:p-8">
+
+
+
+                <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
+
+                    <div>
+
+                        <h1 class="text-3xl font-bold text-slate-800">
+
+                            <%= page %>
+
+                        </h1>
+
+                        <p class="text-slate-500 mt-1">
+
+                            <% if(page==="Home" ){ %>
+                                Manage all your files in one place
+                                <% } else if(page==="Recent" ){ %>
+                                    Your recently uploaded files
+                                    <% } else if(page==="Starred" ){ %>
+                                        Your starred files
+                                        <% } else if(page==="Trash" ){ %>
+                                            Deleted files can be restored from here.
+                                            <% } else if(page==="Search" ){ %>
+                                                Search results
+                                                <% } %>
+
+                        </p>
+
+                    </div>
+
+                    <form action="/file/upload" method="POST" enctype="multipart/form-data"
+                        class="flex flex-col sm:flex-row gap-3 items-center xl:justify-end">
+
+                        <input id="fileInput" type="file" name="file" required class="border bg-white rounded-xl p-3
+                        w-full xl:w-96">
+
+                        <button type="submit" class="bg-blue-600
+                        hover:bg-blue-700
+                        text-white
+                        rounded-xl
+                        px-6
+                        py-3
+                        font-semibold
+                        transition">
 
                             <i class="ri-upload-cloud-line mr-2"></i>
 
@@ -125,70 +278,274 @@
                         </button>
 
                     </form>
+
                 </div>
 
-                <div class="mt-10 grid grid-cols-4 gap-6">
 
-                    <% if(files.length===0){ %>
 
-                        <div class="col-span-4 text-center py-20">
+                <% if(files.length===0){ %>
 
-                            <i class="ri-folder-open-line text-8xl text-slate-300"></i>
+                    <div class="flex-1 flex flex-col items-center justify-center text-center">
 
-                            <h2 class="text-3xl font-semibold mt-6">
-                                No Files Yet
+                        <i class="ri-folder-open-line text-8xl text-slate-300"></i>
+
+                        <% if(page==="Trash" ){ %>
+
+                            <h2 class="text-3xl font-bold mt-6">
+                                Trash is Empty
                             </h2>
 
                             <p class="text-slate-500 mt-3">
-                                Upload your first file to get started.
+                                Deleted files will appear here.
                             </p>
+
+                            <% } else if(page==="Starred" ){ %>
+
+                                <h2 class="text-3xl font-bold mt-6">
+                                    No Starred Files
+                                </h2>
+
+                                <p class="text-slate-500 mt-3">
+                                    Star important files to find them quickly.
+                                </p>
+
+                                <% } else if(page==="Recent" ){ %>
+
+                                    <h2 class="text-3xl font-bold mt-6">
+                                        No Recent Files
+                                    </h2>
+
+                                    <p class="text-slate-500 mt-3">
+                                        Recently uploaded files will appear here.
+                                    </p>
+
+                                    <% } else if(page==="Search" ){ %>
+
+                                        <h2 class="text-3xl font-bold mt-6">
+                                            No Files Found
+                                        </h2>
+
+                                        <p class="text-slate-500 mt-3">
+                                            Try searching with a different filename.
+                                        </p>
+
+                                        <% } else { %>
+
+                                            <h2 class="text-3xl font-bold mt-6">
+                                                Your Drive is Empty
+                                            </h2>
+
+                                            <p class="text-slate-500 mt-3">
+                                                Upload your first file to get started.
+                                            </p>
+
+                                            <% } %>
+
+                    </div>
+
+                    <% } else { %>
+
+
+
+                        <div class="grid
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+                xl:grid-cols-4
+                gap-6
+                mt-10">
+
+                            <% files.forEach(file=> { %>
+
+                                <% let icon="ri-file-line text-blue-500" ; if(file.mimetype.includes("image"))
+                                    icon="ri-image-line text-pink-500" ; else if(file.mimetype.includes("pdf"))
+                                    icon="ri-file-pdf-line text-red-500" ; else if(file.mimetype.includes("word"))
+                                    icon="ri-file-word-line text-blue-600" ; else if(file.mimetype.includes("excel"))
+                                    icon="ri-file-excel-line text-green-600" ; else if(file.mimetype.includes("zip"))
+                                    icon="ri-file-zip-line text-orange-500" ; else if(file.mimetype.includes("video"))
+                                    icon="ri-video-line text-purple-500" ; else if(file.mimetype.includes("audio"))
+                                    icon="ri-music-2-line text-indigo-500" ; %>
+
+                                    <div class="bg-white
+                    rounded-3xl
+                    shadow-sm
+                    hover:shadow-xl
+                    hover:-translate-y-1
+                    transition-all
+                    duration-300
+                    p-6">
+
+                                        <i class="<%= icon %> text-6xl"></i>
+
+                                        <h2 class="font-semibold
+                        text-lg
+                        mt-5
+                        truncate">
+
+                                            <%= file.originalname %>
+
+                                        </h2>
+
+                                        <p class="text-sm
+                        text-slate-500
+                        mt-2">
+
+                                            <%= (file.size/1024).toFixed(2) %> KB
+
+                                        </p>
+
+                                        <p class="text-xs
+                        text-slate-400
+                        mt-1">
+
+                                            Uploaded:
+                                            <%= new Date(file.createdAt).toLocaleDateString() %>
+
+                                        </p>
+
+                                        <div class="mt-6">
+
+                                            <% if(page==="Trash" ){ %>
+
+                                                <div class="flex flex-wrap gap-2">
+
+                                                    <a href="/file/restore/<%= file._id %>"
+                                                        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition">
+
+                                                        <i class="ri-arrow-go-back-line mr-1"></i>
+
+                                                        Restore
+
+                                                    </a>
+
+                                                    <a href="/file/deleteforever/<%= file._id %>"
+                                                        onclick="return confirm('Delete this file forever?')"
+                                                        class="flex-1 text-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl transition">
+
+                                                        <i class="ri-delete-bin-6-line mr-1"></i>
+
+                                                        Delete Forever
+
+                                                    </a>
+
+                                                </div>
+
+                                                <% } else { %>
+
+                                                    <div class="flex flex-wrap gap-2">
+
+                                                        <a href="/file/download/<%= file._id %>"
+                                                            class="flex-1 text-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl transition">
+
+                                                            <i class="ri-download-line mr-1"></i>
+
+                                                            Download
+
+                                                        </a>
+
+                                                        <a href="/file/delete/<%= file._id %>"
+                                                            onclick="return confirm('Move this file to Trash?')"
+                                                            class="flex-1 text-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl transition">
+
+                                                            <i class="ri-delete-bin-line mr-1"></i>
+
+                                                            Delete
+
+                                                        </a>
+
+                                                    </div>
+
+                                                    <div class="mt-3 flex justify-center">
+
+                                                        <a href="/file/star/<%= file._id %>"
+                                                            class="text-lg font-medium transition hover:scale-105">
+
+                                                            <% if(file.starred){ %>
+
+                                                                ⭐ Unstar
+
+                                                                <% } else { %>
+
+                                                                    ☆ Star
+
+                                                                    <% } %>
+
+                                                        </a>
+
+                                                    </div>
+
+                                                    <% } %>
+
+                                        </div>
+
+                                    </div>
+
+                                    <% }) %>
 
                         </div>
 
                         <% } %>
 
-                            <% files.forEach(file=> { %>
+            </section>
+            <%- include("partials/footer") %>
 
-                                <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5">
-
-                                    <i class="ri-file-line text-5xl text-blue-500"></i>
-
-                                    <h2 class="font-semibold mt-4 truncate">
-                                        <%= file.originalname %>
-                                    </h2>
-
-                                    <p class="text-gray-500 text-sm mt-2">
-                                        <%= (file.size / 1024).toFixed(2) %> KB
-                                    </p>
-
-                                    <div class="flex gap-3 mt-5">
-                                        <a href="/file/download/<%=file._id %>"
-                                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                                            Download
-                                        </a>
-
-                                        <a href="/file/delete/<%=file._id %>"
-                                            onclick="return confirm('Delete this file?')"
-                                            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
-
-                                            Delete
-                                        </a>
-                                    </div>
-
-                                </div>
-
-                                <% }) %>
-
-                </div>
-            </div>
         </main>
-
-
-
 
     </div>
 
-    <%- include('partials/footer') %>
+    <script>
+
+        function toggleSidebar() {
+
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+
+        }
+
+        function toggleNewMenu() {
+            document.getElementById("newMenu").classList.toggle("hidden");
+        }
+
+
+        window.addEventListener("resize", () => {
+
+            if (window.innerWidth >= 1024) {
+
+                document.getElementById("sidebar")
+                    .classList.remove("-translate-x-full");
+
+                document.getElementById("overlay")
+                    .classList.add("hidden");
+
+            } else {
+
+                document.getElementById("sidebar")
+                    .classList.add("-translate-x-full");
+
+            }
+
+        });
+
+
+        document.addEventListener("click", function (e) {
+
+            const menu = document.getElementById("newMenu");
+
+            if (!e.target.closest("#newMenu") &&
+                !e.target.closest("[onclick='toggleNewMenu()']")) {
+
+                menu.classList.add("hidden");
+
+            }
+
+        });
+
+    </script>
+
+
 
 </body>
 

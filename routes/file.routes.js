@@ -42,13 +42,83 @@ router.get('/delete/:id', authMiddleware, async (req, res) => {
 
     const file = await File.findById(req.params.id);
 
+    if(!file){
+        return res.redirect("/dashboard")
+    }
+
+    file.isDeleted = true;
+    await file.save();
+
+  
+
+    res.redirect('/dashboard');
+
+});
+
+
+router.get("/star/:id",authMiddleware,async(req,res)=>{
+
+    //console.log("URL:", req.originalUrl);
+    //console.log("ID:", req.params.id);
+    const file = await File.findById(req.params.id);
+
+    if(!file){
+        return res.redirect("/dashboard");
+    }
+
+    file.starred = !file.starred;
+    await file.save();
+
+    res.redirect("/dashboard");
+})
+
+router.get("/deleteforever/:id", authMiddleware, async (req, res) => {
+
+    const file = await File.findById(req.params.id);
+
+    if (!file) {
+        return res.redirect("/trash");
+    }
+
     if (fs.existsSync(file.path)) {
-    fs.unlinkSync(file.path);
-}
+        fs.unlinkSync(file.path);
+    }
 
     await File.findByIdAndDelete(req.params.id);
 
-    res.redirect('/dashboard');
+    res.redirect("/trash");
+});
+
+
+
+router.get("/restore/:id",authMiddleware,async(req,res)=>{
+     const file = await File.findById(req.params.id);
+
+    if (!file) {
+        return res.redirect("/trash");
+    }
+
+    file.isDeleted = false;
+
+    await file.save();
+    res.redirect("/trash")
+})
+
+router.get("/recent",authMiddleware, async(req,res)=>{
+    const files = await File.find({
+        owner : req.user.userId,
+        isDeleted : false
+    })
+
+    .sort({createdAt : -1});
+
+    res.render("dashboard",{
+        user:req.user,
+        files,
+        page:"Recent"
+
+    });
+
 
 });
 
