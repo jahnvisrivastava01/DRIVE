@@ -7,23 +7,44 @@ const User = require("../models/user.models");
 
 
 async function getStats(userId) {
-    return {
-        totalFiles: await File.countDocuments({
+    try {
+        const totalFiles = await File.countDocuments({
             owner: userId,
             isDeleted: false
-        }),
+        });
 
-        starredFiles: await File.countDocuments({
+        const starredFiles = await File.countDocuments({
             owner: userId,
             starred: true,
             isDeleted: false
-        }),
+        });
 
-        trashFiles: await File.countDocuments({
+        const trashFiles = await File.countDocuments({
             owner: userId,
             isDeleted: true
-        })
-    };
+        });
+
+        console.log("Stats:", {
+            totalFiles,
+            starredFiles,
+            trashFiles
+        });
+
+        return {
+            totalFiles,
+            starredFiles,
+            trashFiles
+        };
+
+    } catch (err) {
+        console.error("getStats Error:", err);
+
+        return {
+            totalFiles: 0,
+            starredFiles: 0,
+            trashFiles: 0
+        };
+    }
 }
 
 
@@ -33,25 +54,28 @@ router.get("/", (req, res) => {
 
 
 router.get("/dashboard", authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
 
-    const user = await User.findById(req.user.userId);
+        const files = await File.find({
+            owner: req.user.userId,
+            isDeleted: false
+        });
 
-    const files = await File.find({
-        owner: req.user.userId,
-        isDeleted: false
-    });
+        const stats = await getStats(req.user.userId);
 
-    const stats = await getStats(req.user.userId);
+        res.render("dashboard", {
+            page: "Home",
+            user,
+            files,
+            ...stats
+        });
 
-    res.render("dashboard", {
-        page: "Home",
-        user,
-        files,
-        ...stats
-    });
-
+    } catch (err) {
+        console.error("Dashboard Error:", err);
+        res.status(500).send(err.message);
+    }
 });
-
 
 router.get("/recent", authMiddleware, async (req, res) => {
 
