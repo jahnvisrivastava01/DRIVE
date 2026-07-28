@@ -1,16 +1,34 @@
-const express = require('express');
-
+const express = require("express");
 const router = express.Router();
 
-
-
-const authMiddleware = require('../middleware/auth.middleware');
-const File = require('../models/file.models');
+const authMiddleware = require("../middleware/auth.middleware");
+const File = require("../models/file.models");
 const User = require("../models/user.models");
 
 
-router.get('/', (req, res) => {
-    res.render('index');
+async function getStats(userId) {
+    return {
+        totalFiles: await File.countDocuments({
+            owner: userId,
+            isDeleted: false
+        }),
+
+        starredFiles: await File.countDocuments({
+            owner: userId,
+            starred: true,
+            isDeleted: false
+        }),
+
+        trashFiles: await File.countDocuments({
+            owner: userId,
+            isDeleted: true
+        })
+    };
+}
+
+
+router.get("/", (req, res) => {
+    res.render("index");
 });
 
 
@@ -23,99 +41,106 @@ router.get("/dashboard", authMiddleware, async (req, res) => {
         isDeleted: false
     });
 
-    const totalFiles = await File.countDocuments({
-        owner: req.user.userId,
-        isDeleted: false
-    });
-
-    const starredFiles = await File.countDocuments({
-        owner: req.user.userId,
-        starred: true,
-        isDeleted: false
-    });
-
-    const trashFiles = await File.countDocuments({
-        owner: req.user.userId,
-        isDeleted: true
-    });
+    const stats = await getStats(req.user.userId);
 
     res.render("dashboard", {
         page: "Home",
         user,
         files,
-        totalFiles,
-        starredFiles,
-        trashFiles
+        ...stats
     });
 
-});
-
-
-
-
-
-router.get("/starred",authMiddleware,async(req,res)=>{
-    const files = await File.find({
-        owner : req.user.userId,
-        starred:true,
-        isDeleted : false
-    });
-
-    res.render("dashboard",{
-        user:req.user,
-        files,
-        page:"Starred"
-    });
-});
-
-
-router.get("/trash",authMiddleware,async(req,res)=>{
-    const files = await File.find({
-        owner : req.user.userId,
-        isDeleted : true
-    });
-
-    res.render("dashboard",{
-        user : req.user,
-        files,
-        page:"Trash"
-    });
-});
-
-
-router.get("/search",authMiddleware,async(req,res)=>{
-    const query = req.query.q || "";
-
-    const files = await File.find({
-        owner : req.user.userId,
-        isDeleted:false,
-        originalname: {
-            $regex: query,
-            $options:"i"
-        }
-    });
-
-
-    res.render("dashboard",{
-        user : req.user,
-        files,
-        page:"Search",
-        query
-    });
 });
 
 
 router.get("/recent", authMiddleware, async (req, res) => {
+
+    const user = await User.findById(req.user.userId);
 
     const files = await File.find({
         owner: req.user.userId,
         isDeleted: false
     }).sort({ createdAt: -1 });
 
+    const stats = await getStats(req.user.userId);
+
     res.render("dashboard", {
-        user: req.user,
+        page: "Recent",
+        user,
         files,
-        page: "Recent"
+        ...stats
+    });
+
+});
+
+
+router.get("/starred", authMiddleware, async (req, res) => {
+
+    const user = await User.findById(req.user.userId);
+
+    const files = await File.find({
+        owner: req.user.userId,
+        starred: true,
+        isDeleted: false
+    });
+
+    const stats = await getStats(req.user.userId);
+
+    res.render("dashboard", {
+        page: "Starred",
+        user,
+        files,
+        ...stats
+    });
+
+});
+
+
+router.get("/trash", authMiddleware, async (req, res) => {
+
+    const user = await User.findById(req.user.userId);
+
+    const files = await File.find({
+        owner: req.user.userId,
+        isDeleted: true
+    });
+
+    const stats = await getStats(req.user.userId);
+
+    res.render("dashboard", {
+        page: "Trash",
+        user,
+        files,
+        ...stats
+    });
+
+});
+
+
+
+router.get("/search", authMiddleware, async (req, res) => {
+
+    const user = await User.findById(req.user.userId);
+
+    const query = req.query.q || "";
+
+    const files = await File.find({
+        owner: req.user.userId,
+        isDeleted: false,
+        originalname: {
+            $regex: query,
+            $options: "i"
+        }
+    });
+
+    const stats = await getStats(req.user.userId);
+
+    res.render("dashboard", {
+        page: "Search",
+        user,
+        files,
+        query,
+        ...stats
     });
 
 });
