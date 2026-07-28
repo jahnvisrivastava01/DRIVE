@@ -504,6 +504,21 @@
 
     </div>
 
+    <form
+    id="uploadForm"
+    action="/file/upload"
+    method="POST"
+    enctype="multipart/form-data"
+    style="display:none;"
+>
+    <input
+        type="file"
+        id="fileInput"
+        name="file"
+        onchange="document.getElementById('uploadForm').submit()"
+    >
+</form>
+
     <script>
 
         function toggleSidebar() {
@@ -553,6 +568,7 @@
             }
 
         });
+
 
     </script>
 
