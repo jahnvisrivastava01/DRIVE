@@ -172,6 +172,6 @@ If you like this project,
 ⭐ Star this repository.
 
 
-Made with ❤️ by **Jahnvi Srivastava**
+
 
 </div>
