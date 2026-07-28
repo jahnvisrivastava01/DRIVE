@@ -104,23 +104,7 @@ router.get("/restore/:id",authMiddleware,async(req,res)=>{
     res.redirect("/trash")
 })
 
-router.get("/recent",authMiddleware, async(req,res)=>{
-    const files = await File.find({
-        owner : req.user.userId,
-        isDeleted : false
-    })
 
-    .sort({createdAt : -1});
-
-    res.render("dashboard",{
-        user:req.user,
-        files,
-        page:"Recent"
-
-    });
-
-
-});
 
 
 module.exports = router;
