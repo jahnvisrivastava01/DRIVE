@@ -162,7 +162,7 @@ Database hosted on **MongoDB Atlas**
 
 ---
 
-# 👩‍💻 Developer
+# 👩‍💻 Author
 
 **Jahnvi Srivastava**
 
