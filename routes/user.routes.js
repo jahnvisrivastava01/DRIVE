@@ -82,15 +82,18 @@ router.post('/login',
         })
     }
 
-    const token = jwt.sign({
-        userId : user._id,
-        email : user.email,
-        username : user.username
+   console.log("JWT Secret exists:", !!process.env.JWT_SECRET);
 
+const token = jwt.sign(
+    {
+        userId: user._id,
+        email: user.email,
+        username: user.username
     },
-    process.env.JWT_SECRET,
-    )
+    process.env.JWT_SECRET
+);
 
+console.log("Token generated successfully");
     res.cookie('token',token)
 
 
