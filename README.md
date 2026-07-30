@@ -199,6 +199,5 @@ JWT_SECRET=your_secret_key
 
 ### ⭐ If you found this project useful, consider giving it a star!
 
-Made with ❤️ using Node.js, Express & MongoDB
 
 </div>
