@@ -1,9 +1,19 @@
 <div align="center">
 
 # ☁️ Drive
-### A Modern Google Drive Clone
+### Modern Google Drive Clone
 
-🚀 Secure Cloud File Storage | 🔐 JWT Authentication | 📂 File Uploads | 🌐 Deployed on Render
+Secure Cloud Storage • JWT Authentication • Google Authentication • File Management
+
+<p align="center">
+
+<img src="https://img.shields.io/github/stars/YOUR_USERNAME/Drive?style=for-the-badge"/>
+<img src="https://img.shields.io/github/forks/YOUR_USERNAME/Drive?style=for-the-badge"/>
+<img src="https://img.shields.io/github/license/YOUR_USERNAME/Drive?style=for-the-badge"/>
+
+</p>
+
+<p>
 
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white"/>
 <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white"/>
@@ -11,40 +21,54 @@
 <img src="https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white"/>
 <img src="https://img.shields.io/badge/EJS-B4CA65?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
+<img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/>
 <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens"/>
+<img src="https://img.shields.io/badge/Multer-FF6F00?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black"/>
+
+</p>
 
 </div>
 
 ---
 
-# ✨ Overview
+# 📖 Overview
 
-Drive is a secure cloud-based file storage application inspired by **Google Drive**.
+**Drive** is a modern cloud file storage application inspired by **Google Drive**.
 
-Users can register, log in securely, upload files, organize them, and access them anytime through a modern dashboard.
+It allows users to securely create an account, authenticate using Email/Password or Google Sign-In, upload files, manage personal storage, and access their files from anywhere through a clean and responsive interface.
 
 ---
 
 # 🚀 Live Demo
 
-### 🌐 https://drive-iykg.onrender.com/
+🌐 **https://drive-iykg.onrender.com/**
 
 ---
 
 # ✨ Features
 
+### Authentication
+
 - 🔐 JWT Authentication
-- 👤 User Registration & Login
-- 📁 Secure File Uploads
-- 📂 Personal Dashboard
+- 🔑 Google Sign-In (Firebase Authentication)
+- 🔒 Password Hashing using bcrypt
+- 🍪 Secure Cookie-based Sessions
+
+### File Management
+
+- 📤 Upload Files
+- 📁 Personal Dashboard
 - 🗑 Delete Files
-- ⭐ Starred Files
+- ⭐ Star Files
 - 🕒 Recent Files
-- 📦 MongoDB Atlas Database
-- 🎨 Responsive UI
+
+### User Experience
+
+- 🎨 Modern Responsive UI
 - ⚡ Fast Express Backend
-- 🌐 Live Deployment on Render
+- 📱 Mobile Friendly
+- 🌐 Cloud Deployment
 
 ---
 
@@ -71,8 +95,13 @@ Users can register, log in securely, upload files, organize them, and access the
 ## Authentication
 
 - JWT
+- Firebase Authentication
 - bcrypt
-- Cookies
+- Cookie Parser
+
+## Storage
+
+- Multer
 
 ## Deployment
 
@@ -80,26 +109,33 @@ Users can register, log in securely, upload files, organize them, and access the
 
 ---
 
-# 📂 Folder Structure
+# 📂 Project Structure
 
-```bash
+```text
 Drive
 │
 ├── config/
 ├── middleware/
 ├── models/
+├── public/
+│   ├── css/
+│   ├── images/
+│   └── js/
+│
 ├── routes/
+├── src/
 ├── uploads/
 ├── views/
 │
 ├── app.js
 ├── package.json
+├── package-lock.json
 └── README.md
 ```
 
 ---
 
-# ⚙ Installation
+# ⚙️ Installation
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/Drive.git
@@ -111,11 +147,17 @@ npm install
 npm start
 ```
 
+Server runs on:
+
+```text
+http://localhost:3000
+```
+
 ---
 
 # 🔑 Environment Variables
 
-Create a `.env` file
+Create a `.env` file inside the project root.
 
 ```env
 PORT=3000
@@ -127,51 +169,44 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# 📦 Packages Used
+# 📦 Dependencies
 
 - Express.js
 - Mongoose
-- JWT
-- bcrypt
 - Multer
-- Cookie Parser
+- bcrypt
+- jsonwebtoken
+- express-validator
 - dotenv
+- cookie-parser
 - EJS
 
 ---
 
-# 🌟 Future Enhancements
+# 🚀 Future Enhancements
 
-- 📁 Folder Management
-- 📤 Share Files
+- 📂 Folder Management
+- 📤 File Sharing
 - 🔍 Search Files
 - ❤️ Favorites
-- 🗑 Trash Bin
-- ☁ AWS S3 / Cloudinary Storage
-- 📊 Storage Usage Analytics
+- ☁ Cloudinary / AWS S3 Storage
+- 📊 Storage Analytics
 - 🌙 Dark Mode
-- 📱 Mobile Responsive Improvements
-
----
-
-# 🚀 Deployment
-
-Hosted on **Render**
-
-Database hosted on **MongoDB Atlas**
+- 📄 File Preview
+- 📥 Download History
 
 ---
 
 # 👩‍💻 Author
 
-**Jahnvi Srivastava**
+### Jahnvi Srivastava
 
+---
 
-If you like this project,
+<div align="center">
 
-⭐ Star this repository.
+### ⭐ If you found this project useful, consider giving it a star!
 
-
-
+Made with ❤️ using Node.js, Express & MongoDB
 
 </div>
