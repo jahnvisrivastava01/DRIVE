@@ -4,6 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+@media (max-width: 640px) {
+    #toast-container {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+    }
+
+    .toast {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+</style>
 
     <title>Login</title>
 
@@ -72,6 +88,38 @@
         </p>
 
     </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    newestOnTop: true,
+    preventDuplicates: true,
+    positionClass: "toast-top-right",
+    timeOut: "3500",
+    extendedTimeOut: "1000",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut"
+};
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const validationBox = document.getElementById("validation-box");
+
+    if (validationBox) {
+        setTimeout(() => {
+            validationBox.style.transition = "opacity 0.5s ease";
+            validationBox.style.opacity = "0";
+
+            setTimeout(() => {
+                validationBox.remove();
+            }, 500);
+        }, 5000);
+    }
+});
+</script>
 
 </body>
 

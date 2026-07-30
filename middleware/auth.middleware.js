@@ -4,7 +4,7 @@ const authMiddleware=(req,res,next)=>{
     const token = req.cookies.token;
 
     if(!token){
-        return res.rediect('/user/login');
+        return res.redirect('/user/login');
 
     }
 

@@ -9,6 +9,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+@media (max-width: 640px) {
+    #toast-container {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+    }
+
+    .toast {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+</style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
@@ -32,39 +48,61 @@
         </div>
 
         <form action="/user/register" method="post" class="mt-8 space-y-5">
+            <% if(typeof error !=="undefined" && error) { %>
+                <script>
+                    window.onload = function () {
+                        toastr.error("<%= error %>");
+                    }
+                </script>
+                <% } %>
 
-            <div>
+                    <% if(typeof errors !=="undefined" && errors.length> 0) { %>
+                        <div id="validation-box" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            <ul>
+                                <% errors.forEach(error=> { %>
+                                    <li>• <%= error.msg %>
+                                    </li>
 
-                <label class="text-slate-300">Username</label>
+                                    <%})%>
+                            </ul>
+                        </div>
 
-                <input type="text" name="username" required
-                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+                        <%}%>
 
-            </div>
+                            <div>
 
-            <div>
+                                <label class="text-slate-300">Username</label>
 
-                <label class="text-slate-300">Email</label>
 
-                <input type="email" name="email" required
-                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+                                <input type="text" name="username" value="<%= old?.username || '' %>" required
+                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
 
-            </div>
+                            </div>
 
-            <div>
+                            <div>
 
-                <label class="text-slate-300">Password</label>
+                                <label class="text-slate-300">Email</label>
 
-                <input type="password" name="password" required
-                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+                                <input type="email" name="email" value="<%= old?.email || '' %>" required
+                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
 
-            </div>
+                            </div>
 
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl text-white">
+                            <div>
 
-                Create Account
+                                <label class="text-slate-300">Password</label>
 
-            </button>
+                                <input type="password" name="password" required
+                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl text-white">
+
+                                Create Account
+
+                            </button>
 
         </form>
 
@@ -81,6 +119,39 @@
         </p>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    newestOnTop: true,
+    preventDuplicates: true,
+    positionClass: "toast-top-right",
+    timeOut: "3500",
+    extendedTimeOut: "1000",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut"
+};
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const validationBox = document.getElementById("validation-box");
+
+    if (validationBox) {
+        setTimeout(() => {
+            validationBox.style.transition = "opacity 0.5s ease";
+            validationBox.style.opacity = "0";
+
+            setTimeout(() => {
+                validationBox.remove();
+            }, 500);
+        }, 5000);
+    }
+});
+</script>
 
 </body>
 
