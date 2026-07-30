@@ -73,6 +73,21 @@
 
             </button>
 
+            <div class="w-full mt-4">
+                <button 
+                   type="button"
+                   id="googleSignIn"
+                   class="w-full max-w-md mx-auto flex items-center justify-center gap-3 bg-white text-gray-700 border border-gray-300 rounded-lg px-4 py-3 font-medium shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-200 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                   <img 
+                      src = "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                      class="w-5 h-5 flex-shrink-0"
+                      alt="Google" />
+
+                      <span>Continue with Google</span>
+                </button>
+            </div>
+
         </form>
 
         <p class="text-center text-slate-400 mt-6">
@@ -90,6 +105,7 @@
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script type="module" src="/js/firebase.js"></script>
 <script>
 toastr.options = {
     closeButton: true,
