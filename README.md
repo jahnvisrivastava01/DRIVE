@@ -5,14 +5,6 @@
 
 Secure Cloud Storage • JWT Authentication • Google Authentication • File Management
 
-<p align="center">
-
-<img src="https://img.shields.io/github/stars/YOUR_USERNAME/Drive?style=for-the-badge"/>
-<img src="https://img.shields.io/github/forks/YOUR_USERNAME/Drive?style=for-the-badge"/>
-<img src="https://img.shields.io/github/license/YOUR_USERNAME/Drive?style=for-the-badge"/>
-
-</p>
-
 <p>
 
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white"/>
