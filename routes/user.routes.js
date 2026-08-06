@@ -188,23 +188,22 @@ router.post("/google-login", async (req, res) => {
 
         const decodedToken = await auth.verifyIdToken(idToken);
 
-        const { email, name } = decodedToken;
+        const { email } = decodedToken;
 
-        let user = await userModel.findOne({ email });
+        const user = await userModel.findOne({ email });
 
         if (!user) {
-            user = await userModel.create({
-                username: name.replace(/\s+/g, "").toLowerCase(),
-                email,
-                password: ""
+            return res.status(404).json({
+                success: false,
+                message: "User not registered. Please create an account first."
             });
         }
 
         const token = jwt.sign(
             {
                 userId: user._id,
-                username: user.username,
-                email: user.email
+                email: user.email,
+                username: user.username
             },
             process.env.JWT_SECRET,
             {
@@ -221,12 +220,79 @@ router.post("/google-login", async (req, res) => {
         });
 
     } catch (err) {
+
         console.error(err);
+
         res.status(401).json({
             success: false,
-            message: "Google Authentication Failed"
+            message: "Google Login Failed"
         });
+
     }
+});
+
+router.post("/google-register", async (req, res) => {
+
+    try {
+
+        const { idToken } = req.body;
+
+        const decodedToken = await auth.verifyIdToken(idToken);
+
+        const { email, name } = decodedToken;
+
+        const existingUser = await userModel.findOne({ email });
+
+        if (existingUser) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Account already exists. Please login."
+            });
+
+        }
+
+        const user = await userModel.create({
+
+            username: name.replace(/\s+/g, "").toLowerCase(),
+
+            email,
+
+            password: ""
+
+        });
+
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                email: user.email,
+                username: user.username
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        res.cookie("token", token, {
+            httpOnly: true
+        });
+
+        res.json({
+            success: true
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(401).json({
+            success: false,
+            message: "Google Registration Failed"
+        });
+
+    }
+
 });
 
 

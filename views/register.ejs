@@ -12,19 +12,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <style>
-@media (max-width: 640px) {
-    #toast-container {
-        width: 90%;
-        left: 5%;
-        right: 5%;
-    }
+        @media (max-width: 640px) {
+            #toast-container {
+                width: 90%;
+                left: 5%;
+                right: 5%;
+            }
 
-    .toast {
-        width: 100%;
-        font-size: 14px;
-    }
-}
-</style>
+            .toast {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
@@ -33,79 +33,119 @@
 
         <div class="text-center">
 
-            <div class="w-20 h-20 rounded-full bg-blue-600/20 flex items-center justify-center mx-auto">
-                <i class="ri-cloud-line text-5xl text-blue-500"></i>
-            </div>
+    <div class="w-20 h-20 rounded-full bg-blue-600/20 flex items-center justify-center mx-auto">
+        <i class="ri-cloud-line text-5xl text-blue-500"></i>
+    </div>
 
-            <h1 class="text-white text-3xl font-bold mt-5">
-                Create Account
-            </h1>
+    <h1 class="text-white text-3xl font-bold mt-5">
+        Create Account
+    </h1>
 
-            <p class="text-slate-400 mt-2">
-                Create your Drive account
-            </p>
+    <p class="text-slate-400 mt-2">
+        Create your Drive account
+    </p>
+
+</div>
+
+<form action="/user/register" method="post" class="mt-8 space-y-5">
+
+    <% if(typeof error !== "undefined" && error) { %>
+        <script>
+            window.onload = function () {
+                toastr.error("<%= error %>");
+            }
+        </script>
+    <% } %>
+
+    <% if(typeof errors !== "undefined" && errors.length > 0) { %>
+
+        <div id="validation-box"
+            class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+
+            <ul>
+
+                <% errors.forEach(error => { %>
+
+                    <li>• <%= error.msg %></li>
+
+                <% }) %>
+
+            </ul>
 
         </div>
 
-        <form action="/user/register" method="post" class="mt-8 space-y-5">
-            <% if(typeof error !=="undefined" && error) { %>
-                <script>
-                    window.onload = function () {
-                        toastr.error("<%= error %>");
-                    }
-                </script>
-                <% } %>
+    <% } %>
 
-                    <% if(typeof errors !=="undefined" && errors.length> 0) { %>
-                        <div id="validation-box" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                            <ul>
-                                <% errors.forEach(error=> { %>
-                                    <li>• <%= error.msg %>
-                                    </li>
+    <div>
 
-                                    <%})%>
-                            </ul>
-                        </div>
+        <label class="text-slate-300">Username</label>
 
-                        <%}%>
+        <input
+            type="text"
+            name="username"
+            value="<%= old?.username || '' %>"
+            required
+            class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
 
-                            <div>
+    </div>
 
-                                <label class="text-slate-300">Username</label>
+    <div>
 
+        <label class="text-slate-300">Email</label>
 
-                                <input type="text" name="username" value="<%= old?.username || '' %>" required
-                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+        <input
+            type="email"
+            name="email"
+            value="<%= old?.email || '' %>"
+            required
+            class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
 
-                            </div>
+    </div>
 
-                            <div>
+    <div>
 
-                                <label class="text-slate-300">Email</label>
+        <label class="text-slate-300">Password</label>
 
-                                <input type="email" name="email" value="<%= old?.email || '' %>" required
-                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+        <input
+            type="password"
+            name="password"
+            required
+            class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
 
-                            </div>
+    </div>
 
-                            <div>
+    <button
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl text-white font-medium transition">
 
-                                <label class="text-slate-300">Password</label>
+        Create Account
 
-                                <input type="password" name="password" required
-                                    class="w-full mt-2 p-3 rounded-xl bg-slate-800 border border-slate-700 text-white">
+    </button>
 
-                            </div>
+    <div class="flex items-center my-2">
 
-                            <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl text-white">
+        <hr class="flex-grow border-slate-700">
 
-                                Create Account
+        <span class="mx-4 text-slate-400 text-sm">OR</span>
 
-                            </button>
+        <hr class="flex-grow border-slate-700">
 
-        </form>
+    </div>
 
+    <button
+        type="button"
+        id="googleRegisterBtn"
+        class="googleSignInBtn w-full flex items-center justify-center gap-3 bg-white text-gray-700 border border-gray-300 rounded-xl py-3 font-medium shadow-sm hover:bg-gray-100 transition">
+
+        <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            class="w-5 h-5">
+
+        Register with Google
+
+    </button>
+
+</form>
         <p class="text-center text-slate-400 mt-6">
 
             Already have an account?
@@ -123,36 +163,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-toastr.options = {
-    closeButton: true,
-    progressBar: true,
-    newestOnTop: true,
-    preventDuplicates: true,
-    positionClass: "toast-top-right",
-    timeOut: "3500",
-    extendedTimeOut: "1000",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut"
-};
-</script>
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            newestOnTop: true,
+            preventDuplicates: true,
+            positionClass: "toast-top-right",
+            timeOut: "3500",
+            extendedTimeOut: "1000",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+    </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const validationBox = document.getElementById("validation-box");
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const validationBox = document.getElementById("validation-box");
 
-    if (validationBox) {
-        setTimeout(() => {
-            validationBox.style.transition = "opacity 0.5s ease";
-            validationBox.style.opacity = "0";
+            if (validationBox) {
+                setTimeout(() => {
+                    validationBox.style.transition = "opacity 0.5s ease";
+                    validationBox.style.opacity = "0";
 
-            setTimeout(() => {
-                validationBox.remove();
-            }, 500);
-        }, 5000);
-    }
-});
-</script>
-
+                    setTimeout(() => {
+                        validationBox.remove();
+                    }, 500);
+                }, 5000);
+            }
+        });
+    </script>
+<script type="module" src="/js/firebase.js"></script>
 </body>
 
 </html>

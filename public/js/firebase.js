@@ -22,10 +22,35 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+let authType = null;
+
+const loginBtn = document.getElementById("googleLoginBtn");
+const registerBtn = document.getElementById("googleRegisterBtn");
+
+if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+        authType = "login";
+        handleGoogleSignIn(loginBtn);
+    });
+}
+
+if (registerBtn) {
+    registerBtn.addEventListener("click", () => {
+        authType = "register";
+        handleGoogleSignIn(registerBtn);
+    });
+}
+
 async function loginToBackend(user) {
+
     const idToken = await user.getIdToken();
 
-    const response = await fetch("/user/google-login", {
+    const endpoint =
+        authType === "register"
+            ? "/user/google-register"
+            : "/user/google-login";
+
+    const response = await fetch(endpoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,38 +61,94 @@ async function loginToBackend(user) {
     const data = await response.json();
 
     if (data.success) {
-        window.location.href = "/dashboard";
+
+        toastr.success(
+            authType === "register"
+                ? "Account created successfully!"
+                : "Welcome back!"
+        );
+
+        localStorage.removeItem("authType");
+
+        setTimeout(() => {
+            window.location.href = "/dashboard";
+        }, 700);
+
     } else {
-        alert("Google Login Failed");
+
+        toastr.error(data.message);
+
     }
+
 }
 
-document.getElementById("googleSignIn").addEventListener("click", async () => {
+async function handleGoogleSignIn(button) {
+
     try {
 
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        button.disabled = true;
+
+        button.innerHTML = `
+            <i class="ri-loader-4-line animate-spin text-xl"></i>
+            <span>
+                ${authType === "register"
+                    ? "Creating account..."
+                    : "Signing in..."}
+            </span>
+        `;
+
+        const isMobile =
+            /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (isMobile) {
+
+            localStorage.setItem("authType", authType);
+
             await signInWithRedirect(auth, provider);
+
         } else {
+
             const result = await signInWithPopup(auth, provider);
+
             await loginToBackend(result.user);
+
         }
 
     } catch (err) {
+
         console.error(err);
-        alert("Google Sign-In Failed");
+
+        toastr.error(err.message || "Google Sign-In Failed");
+
+        button.disabled = false;
+
+        button.innerHTML = `
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+            <span>Continue with Google</span>
+        `;
+
     }
-});
+
+}
 
 try {
+
     const redirectResult = await getRedirectResult(auth);
 
     if (redirectResult) {
+
+        authType = localStorage.getItem("authType");
+
         await loginToBackend(redirectResult.user);
+
     }
+
 } catch (err) {
+
     console.error(err);
+
+    toastr.error(err.message);
+
 }
 
 export {
